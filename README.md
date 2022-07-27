@@ -1,8 +1,8 @@
-# PyTorch implementation of EWGS
+# PyTorch implementation of Bin-Train and Quant using k-means and EWGS. 
 
-This is the implementation of the paper "Network Quantization with Element-wise Gradient Scaling".
 
-For more information, checkout the project site [[website](https://cvlab.yonsei.ac.kr/projects/EWGS/)] and the paper [[PDF](https://arxiv.org/pdf/2104.00903.pdf)].
+
+EWGS code reference: https://github.com/cvlab-yonsei/EWGS
 
 ## Requirements
 * Python >= 3.6
@@ -12,18 +12,6 @@ For more information, checkout the project site [[website](https://cvlab.yonsei.
 * CIFAR-10 (will be automatically downloaded when you run the code)
 * ImageNet (ILSVRC-2012) available at [http://www.image-net.org](http://www.image-net.org/download)
 
-## Code
-Please refer to the ``run.sh`` files in the CIFAR10 and ImageNet folders.
-
-## Bibtex
-```
-@inproceedings{lee2021network,
-  title={Network Quantization with Element-wise Gradient Scaling},
-  author={Lee, Junghyup and Kim, Dohyung and Ham, Bumsub},
-  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
-  year={2021}
-}
-```
 
 ## References
 * ImageNet training code: [[PyTorch official example code](https://github.com/pytorch/examples/blob/master/imagenet/main.py)]

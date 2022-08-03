@@ -216,7 +216,7 @@ def sens_k_means_pq(weight, grad,name=None):
             layer_bits = 0
             
             #partition_bits = [4,6]
-            partition_bits = [4,4,6,6]
+            partition_bits = [2,2,8,8]
             number_of_part = weight_np.shape[1]//len(partition_bits)
 
             #accumulate grad for partitions

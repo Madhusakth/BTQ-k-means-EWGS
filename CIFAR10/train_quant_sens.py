@@ -137,9 +137,13 @@ def sens_k_means_pq(weight, grad,name=None):
             skip = False
 
 
+        ######## override skip as check
+        #skip = True
+
+
         bit = args.bits
         bins = 2**bit
-        if skip:
+        if skip and weight.numel() < 1000:
             #TODO: Sensitvity split k-means for skipped weights
             print("Skipping weights:", name)
             bit = 8
@@ -163,9 +167,9 @@ def sens_k_means_pq(weight, grad,name=None):
         if conv:
             if d3 == 3 and d4 == 3:
                 #if name in pq_layers:
-                if "weight" in name and skip==False:
+                if "weight" in name and weight.numel()>=1000:  #############skip override
                     block_size=args.cv_block_size
-                    #print("product quantization with block_size: ",block_size, name)
+                    print("product quantization with block_size: ",block_size, name)
                     pq = True
                 else:
                     block_size = 1
@@ -190,33 +194,46 @@ def sens_k_means_pq(weight, grad,name=None):
         grad_np = reshape_weights(grad)
         grad_np = unroll_weights(grad_np, n_blocks)
         grad_np = grad_np.cpu().detach().numpy()
-        grad_np = np.mean(abs(grad_np), axis=0)  #mean of gradients across block
-
-        grad_np = grad_np.reshape(-1)/np.linalg.norm(grad_np) #norm_grad_np
+        #grad_np = np.mean(abs(grad_np), axis=0)  #mean of gradients across block
+        #grad_np = grad_np.reshape(-1)/np.linalg.norm(grad_np) #norm_grad_np
 
         weight = reshape_weights(weight)
         weight = unroll_weights(weight, n_blocks)
 
-        layer_bits = 0
-        
-        #partition_bits = [4,6]
-        partition_bits = [4,4,4,6,6,6]
-        number_of_part = weight_np.shape[1]//len(partition_bits)
+        if skip:
+            print("k-means on skipped weights", weight_np.shape)
+            grad_np = np.mean(abs(grad_np), axis=0)  #mean of gradients across block
+            grad_np = grad_np.reshape(-1)/np.linalg.norm(grad_np) #norm_grad_np
 
-        #accumulate grad for partitions
-        total_grad = []
-        for p in range(len(partition_bits)):
-            total_grad.append(sum(grad_np[p*number_of_part: (p+1)*number_of_part]))
-        grad_idxs = np.argsort(total_grad)
-        weight_np = weight_np.T
-        for p in range(len(partition_bits)):
-            curr_bin = partition_bits[int(np.where(grad_idxs==p)[0])]
-            start_idx = p*number_of_part
-            end_idx = (p+1)*number_of_part
-            kmeans = KMeans(n_clusters=curr_bin).fit(weight_np[start_idx:end_idx,:], sample_weight=grad_np[start_idx:end_idx])
-            weight_np[start_idx:end_idx,:] = kmeans.cluster_centers_[ kmeans.labels_]
+            kmeans = KMeans(n_clusters=bins).fit(weight_np.T, sample_weight=grad_np)
+            weight_np = kmeans.cluster_centers_[ kmeans.labels_]
 
-            layer_bits += weight_np[start_idx:end_idx,:].size*bit/block_size
+        else:
+            print("Partition k-means")
+            layer_bits = 0
+            
+            #partition_bits = [4,6]
+            partition_bits = [5,5,5,5]
+            number_of_part = weight_np.shape[1]//len(partition_bits)
+
+            #accumulate grad for partitions
+            total_grad = []
+            for p in range(len(partition_bits)):
+                total_grad.append((abs(grad_np[:,p*number_of_part: (p+1)*number_of_part]).sum()))
+            grad_idxs = np.argsort(total_grad)
+            weight_np = weight_np.T
+
+            grad_np = np.mean(abs(grad_np), axis=0)  #mean of gradients across block
+            grad_np = grad_np.reshape(-1)/np.linalg.norm(grad_np) #norm_grad_np
+
+            for p in range(len(partition_bits)):
+                curr_bin = partition_bits[int(np.where(grad_idxs==p)[0])]
+                start_idx = p*number_of_part
+                end_idx = (p+1)*number_of_part
+                kmeans = KMeans(n_clusters=curr_bin).fit(weight_np[start_idx:end_idx,:], sample_weight=grad_np[start_idx:end_idx])
+                weight_np[start_idx:end_idx,:] = kmeans.cluster_centers_[ kmeans.labels_]
+
+                layer_bits += weight_np[start_idx:end_idx,:].size*bit/block_size
 
         weight = torch.from_numpy(weight_np.T).float().to(cuda_device)
 
@@ -463,6 +480,7 @@ if args.eval:
     model.eval()
     #for name,param in model.named_parameters():
     #    print(name, len(np.unique(param.cpu().detach().numpy())),np.unique(param.cpu().detach().numpy()))
+    print(model)
 
     with torch.no_grad():
         correct_classified = 0
@@ -599,7 +617,7 @@ for ep in range(args.epochs):
         total_comp_bits = 0
         for name, param in model.named_parameters():
             #if ('layer' in name and 'conv' in name and 'weight' in name and 'bn' not in name) or name=='model_fp32.fc.weight':
-            if ('layer' in name or 'weight' in name) and len(param.shape) >=2:
+            if ('layer' in name or 'weight' in name) and len(param.shape) >2:
                 print(name, param.shape)
                 if debug:
                     if param.shape[0] == 32 and param.shape[1]==16:

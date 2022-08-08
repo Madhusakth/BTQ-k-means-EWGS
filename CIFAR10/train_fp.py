@@ -27,7 +27,7 @@ parser = argparse.ArgumentParser(description="PyTorch Implementation of EWGS (CI
 # data and model
 parser.add_argument('--dataset', type=str, default='cifar10', choices=('cifar10','cifar100'), 
                                  help='dataset to use CIFAR10|CIFAR100')
-parser.add_argument('--arch', type=str, default='resnet20_fp', help='model architecture resnet20_fp, mobilenetv2_fp')
+parser.add_argument('--arch', type=str, default='resnet20_fp', help='model architecture resnet20_fp, mobilenetv2_fp, resnet56_fp')
 parser.add_argument('--num_workers', type=int, default=4, help='number of data loading workers')
 parser.add_argument('--seed', type=int, default=None, help='seed for initialization')
 

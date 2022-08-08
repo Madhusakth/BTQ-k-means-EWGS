@@ -1,0 +1,997 @@
+configs
+dataset: cifar10	arch: resnet20_quant	num_workers: 4	seed: None	batch_size: 256	epochs: 400	optimizer_m: Adam	optimizer_q: Adam	lr_m: 0.004	lr_q: 4e-05	lr_m_end: 0.0	lr_q_end: 0.0	decay_schedule_m: 150-300	decay_schedule_q: 150-300	momentum: 0.9	weight_decay: 0.0001	lr_scheduler_m: cosine	lr_scheduler_q: cosine	gamma: 0.1	QWeightFlag: True	QActFlag: True	weight_levels: 2	act_levels: 256	baseline: False	bkwd_scaling_factorW: 0.0	bkwd_scaling_factorA: 0.0	use_hessian: True	update_every: 10	gpu_id: 0	log_dir: layer_test/	load_pretrain: True	pretrain_path: ../results/ResNet20_CIFAR10/fp/checkpoint/best_checkpoint.pth	btq: False	training_flag: False	eval: False	weighted: False	bits: 5	cv_block_size: 6	pw_fc_block_size: 4	sensitivity: False	per_layer: False	
+
+The number of parameters : 269940
+
+Following modules are initialized from pretrained model
+conv1.weight	bn1.weight	bn1.bias	bn1.running_mean	bn1.running_var	bn1.num_batches_tracked	layer1.0.conv1.weight	layer1.0.bn1.weight	layer1.0.bn1.bias	layer1.0.bn1.running_mean	layer1.0.bn1.running_var	layer1.0.bn1.num_batches_tracked	layer1.0.conv2.weight	layer1.0.bn2.weight	layer1.0.bn2.bias	layer1.0.bn2.running_mean	layer1.0.bn2.running_var	layer1.0.bn2.num_batches_tracked	layer1.1.conv1.weight	layer1.1.bn1.weight	layer1.1.bn1.bias	layer1.1.bn1.running_mean	layer1.1.bn1.running_var	layer1.1.bn1.num_batches_tracked	layer1.1.conv2.weight	layer1.1.bn2.weight	layer1.1.bn2.bias	layer1.1.bn2.running_mean	layer1.1.bn2.running_var	layer1.1.bn2.num_batches_tracked	layer1.2.conv1.weight	layer1.2.bn1.weight	layer1.2.bn1.bias	layer1.2.bn1.running_mean	layer1.2.bn1.running_var	layer1.2.bn1.num_batches_tracked	layer1.2.conv2.weight	layer1.2.bn2.weight	layer1.2.bn2.bias	layer1.2.bn2.running_mean	layer1.2.bn2.running_var	layer1.2.bn2.num_batches_tracked	layer2.0.conv1.weight	layer2.0.bn1.weight	layer2.0.bn1.bias	layer2.0.bn1.running_mean	layer2.0.bn1.running_var	layer2.0.bn1.num_batches_tracked	layer2.0.conv2.weight	layer2.0.bn2.weight	layer2.0.bn2.bias	layer2.0.bn2.running_mean	layer2.0.bn2.running_var	layer2.0.bn2.num_batches_tracked	layer2.1.conv1.weight	layer2.1.bn1.weight	layer2.1.bn1.bias	layer2.1.bn1.running_mean	layer2.1.bn1.running_var	layer2.1.bn1.num_batches_tracked	layer2.1.conv2.weight	layer2.1.bn2.weight	layer2.1.bn2.bias	layer2.1.bn2.running_mean	layer2.1.bn2.running_var	layer2.1.bn2.num_batches_tracked	layer2.2.conv1.weight	layer2.2.bn1.weight	layer2.2.bn1.bias	layer2.2.bn1.running_mean	layer2.2.bn1.running_var	layer2.2.bn1.num_batches_tracked	layer2.2.conv2.weight	layer2.2.bn2.weight	layer2.2.bn2.bias	layer2.2.bn2.running_mean	layer2.2.bn2.running_var	layer2.2.bn2.num_batches_tracked	layer3.0.conv1.weight	layer3.0.bn1.weight	layer3.0.bn1.bias	layer3.0.bn1.running_mean	layer3.0.bn1.running_var	layer3.0.bn1.num_batches_tracked	layer3.0.conv2.weight	layer3.0.bn2.weight	layer3.0.bn2.bias	layer3.0.bn2.running_mean	layer3.0.bn2.running_var	layer3.0.bn2.num_batches_tracked	layer3.1.conv1.weight	layer3.1.bn1.weight	layer3.1.bn1.bias	layer3.1.bn1.running_mean	layer3.1.bn1.running_var	layer3.1.bn1.num_batches_tracked	layer3.1.conv2.weight	layer3.1.bn2.weight	layer3.1.bn2.bias	layer3.1.bn2.running_mean	layer3.1.bn2.running_var	layer3.1.bn2.num_batches_tracked	layer3.2.conv1.weight	layer3.2.bn1.weight	layer3.2.bn1.bias	layer3.2.bn1.running_mean	layer3.2.bn1.running_var	layer3.2.bn1.num_batches_tracked	layer3.2.conv2.weight	layer3.2.bn2.weight	layer3.2.bn2.bias	layer3.2.bn2.running_mean	layer3.2.bn2.running_var	layer3.2.bn2.num_batches_tracked	bn2.weight	bn2.bias	bn2.running_mean	bn2.running_var	bn2.num_batches_tracked	linear.weight	linear.bias	
+
+# total params: 269940
+# model params: 269850
+# quantizer params: 90
+Current epoch: 000	 Test accuracy: 57.75%
+lW: -0.3273163437843323
+uW: 0.3270455300807953
+grad_scaleW: 0.0
+lA: 0.0007906114915385842
+uA: 1.3611345291137695
+grad_scaleA: 0.0
+output_scale: 0.1767205148935318
+
+
+lW: -0.3114796578884125
+uW: 0.31155648827552795
+grad_scaleW: 0.0
+lA: -3.606199970818125e-05
+uA: 1.5913937091827393
+grad_scaleA: 0.0
+output_scale: 0.17577016353607178
+
+
+lW: -0.3507881462574005
+uW: 0.3506578803062439
+grad_scaleW: 0.0
+lA: -0.00013318119454197586
+uA: 1.7349379062652588
+grad_scaleA: 0.0
+output_scale: 0.22576862573623657
+
+
+lW: -0.3000299036502838
+uW: 0.29988428950309753
+grad_scaleW: 0.0
+lA: -0.00016193068586289883
+uA: 1.5298320055007935
+grad_scaleA: 0.0
+output_scale: 0.18244150280952454
+
+
+lW: -0.2966802716255188
+uW: 0.29752397537231445
+grad_scaleW: 0.0
+lA: 0.000145516314660199
+uA: 1.9461551904678345
+grad_scaleA: 0.0
+output_scale: 0.19736164808273315
+
+
+lW: -0.24387750029563904
+uW: 0.24372898042201996
+grad_scaleW: 0.0
+lA: -0.00030930922366678715
+uA: 1.0522290468215942
+grad_scaleA: 0.0
+output_scale: 0.09725750982761383
+
+
+lW: -0.2644912004470825
+uW: 0.2637085020542145
+grad_scaleW: 0.0
+lA: 0.0007987699354998767
+uA: 1.915862798690796
+grad_scaleA: 0.0
+output_scale: 0.17875272035598755
+
+
+lW: -0.23324944078922272
+uW: 0.23349067568778992
+grad_scaleW: 0.0
+lA: -0.00024099808069877326
+uA: 1.2998051643371582
+grad_scaleA: 0.0
+output_scale: 0.10925827920436859
+
+
+lW: -0.22726260125637054
+uW: 0.22760868072509766
+grad_scaleW: 0.0
+lA: 0.00025528002879582345
+uA: 2.0103108882904053
+grad_scaleA: 0.0
+output_scale: 0.1749667227268219
+
+
+lW: -0.2038801908493042
+uW: 0.20370566844940186
+grad_scaleW: 0.0
+lA: -0.00014608175843022764
+uA: 0.9114524722099304
+grad_scaleA: 0.0
+output_scale: 0.06866046786308289
+
+
+lW: -0.2365773320198059
+uW: 0.23660437762737274
+grad_scaleW: 0.0
+lA: -0.00028542071231640875
+uA: 1.9494582414627075
+grad_scaleA: 0.0
+output_scale: 0.15700890123844147
+
+
+lW: -0.20190411806106567
+uW: 0.2020755410194397
+grad_scaleW: 0.0
+lA: -0.0002520655107218772
+uA: 0.8535803556442261
+grad_scaleA: 0.0
+output_scale: 0.06618252396583557
+
+
+lW: -0.20080921053886414
+uW: 0.20064933598041534
+grad_scaleW: 0.0
+lA: -0.00011363943485775962
+uA: 1.9618310928344727
+grad_scaleA: 0.0
+output_scale: 0.1523047238588333
+
+
+lW: -0.19134192168712616
+uW: 0.19113092124462128
+grad_scaleW: 0.0
+lA: 0.00039819086669012904
+uA: 1.0916353464126587
+grad_scaleA: 0.0
+output_scale: 0.07491473108530045
+
+
+lW: -0.18851132690906525
+uW: 0.18852484226226807
+grad_scaleW: 0.0
+lA: -5.97925900365226e-05
+uA: 1.9803717136383057
+grad_scaleA: 0.0
+output_scale: 0.1329042613506317
+
+
+lW: -0.1794336438179016
+uW: 0.17801767587661743
+grad_scaleW: 0.0
+lA: 0.0002552461519371718
+uA: 0.7417030334472656
+grad_scaleA: 0.0
+output_scale: 0.04634343087673187
+
+
+lW: -0.18902255594730377
+uW: 0.1894972324371338
+grad_scaleW: 0.0
+lA: -0.00019455698202364147
+uA: 1.780990481376648
+grad_scaleA: 0.0
+output_scale: 0.11314564943313599
+
+
+lW: -0.1363125741481781
+uW: 0.13278935849666595
+grad_scaleW: 0.0
+lA: 9.723576113174204e-06
+uA: 0.6601433753967285
+grad_scaleA: 0.0
+output_scale: 0.034124184399843216
+
+
+Current epoch: 001	 Test accuracy: 71.67999999999999%
+lW: -0.3269653618335724
+uW: 0.3268405497074127
+grad_scaleW: 0.0
+lA: 0.0014339754125103354
+uA: 1.3616834878921509
+grad_scaleA: 0.0
+output_scale: 0.17652834951877594
+
+
+lW: -0.3111816644668579
+uW: 0.31131821870803833
+grad_scaleW: 0.0
+lA: -1.590299143572338e-05
+uA: 1.591064453125
+grad_scaleA: 0.0
+output_scale: 0.175777405500412
+
+
+lW: -0.3504868745803833
+uW: 0.3502442240715027
+grad_scaleW: 0.0
+lA: -0.00013109543942846358
+uA: 1.7345460653305054
+grad_scaleA: 0.0
+output_scale: 0.22536425292491913
+
+
+lW: -0.30005428194999695
+uW: 0.2992490231990814
+grad_scaleW: 0.0
+lA: 0.00017972796922549605
+uA: 1.5304899215698242
+grad_scaleA: 0.0
+output_scale: 0.18226967751979828
+
+
+lW: -0.2963337004184723
+uW: 0.2970254421234131
+grad_scaleW: 0.0
+lA: 0.0005560335703194141
+uA: 1.9462642669677734
+grad_scaleA: 0.0
+output_scale: 0.1967555731534958
+
+
+lW: -0.2435474544763565
+uW: 0.2436392903327942
+grad_scaleW: 0.0
+lA: -0.00016874889843165874
+uA: 1.0531201362609863
+grad_scaleA: 0.0
+output_scale: 0.09672527760267258
+
+
+lW: -0.2641054689884186
+uW: 0.2633028030395508
+grad_scaleW: 0.0
+lA: 0.0011408079881221056
+uA: 1.9158961772918701
+grad_scaleA: 0.0
+output_scale: 0.17836369574069977
+
+
+lW: -0.23291684687137604
+uW: 0.23269213736057281
+grad_scaleW: 0.0
+lA: -0.00019487513054627925
+uA: 1.300972819328308
+grad_scaleA: 0.0
+output_scale: 0.10937380790710449
+
+
+lW: -0.2265682816505432
+uW: 0.22754572331905365
+grad_scaleW: 0.0
+lA: 0.00016673388017807156
+uA: 2.011143207550049
+grad_scaleA: 0.0
+output_scale: 0.17385125160217285
+
+
+lW: -0.20361685752868652
+uW: 0.20339588820934296
+grad_scaleW: 0.0
+lA: -0.00038662683800794184
+uA: 0.9131462574005127
+grad_scaleA: 0.0
+output_scale: 0.06794261932373047
+
+
+lW: -0.23631085455417633
+uW: 0.2361864298582077
+grad_scaleW: 0.0
+lA: -0.00019633310148492455
+uA: 1.9506316184997559
+grad_scaleA: 0.0
+output_scale: 0.15575341880321503
+
+
+lW: -0.2020719051361084
+uW: 0.20137743651866913
+grad_scaleW: 0.0
+lA: 0.0010459829354658723
+uA: 0.8549975752830505
+grad_scaleA: 0.0
+output_scale: 0.06625095009803772
+
+
+lW: -0.20009845495224
+uW: 0.20037895441055298
+grad_scaleW: 0.0
+lA: 0.00033499152050353587
+uA: 1.9633718729019165
+grad_scaleA: 0.0
+output_scale: 0.1511215716600418
+
+
+lW: -0.19062049686908722
+uW: 0.19107669591903687
+grad_scaleW: 0.0
+lA: 0.0015157292364165187
+uA: 1.0942479372024536
+grad_scaleA: 0.0
+output_scale: 0.07437651604413986
+
+
+lW: -0.18815875053405762
+uW: 0.18846037983894348
+grad_scaleW: 0.0
+lA: 0.0004264941089786589
+uA: 1.982936143875122
+grad_scaleA: 0.0
+output_scale: 0.1311468482017517
+
+
+lW: -0.17887035012245178
+uW: 0.17818133533000946
+grad_scaleW: 0.0
+lA: 0.0003849428612738848
+uA: 0.7449703812599182
+grad_scaleA: 0.0
+output_scale: 0.04543079435825348
+
+
+lW: -0.18881094455718994
+uW: 0.18936434388160706
+grad_scaleW: 0.0
+lA: 0.0001670416386332363
+uA: 1.7833143472671509
+grad_scaleA: 0.0
+output_scale: 0.11235444247722626
+
+
+lW: -0.1365443468093872
+uW: 0.1322886347770691
+grad_scaleW: 0.0
+lA: 0.0005094301886856556
+uA: 0.6623970866203308
+grad_scaleA: 0.0
+output_scale: 0.03416445851325989
+
+
+Current epoch: 002	 Test accuracy: 65.47%
+lW: -0.32675835490226746
+uW: 0.32636013627052307
+grad_scaleW: 0.0
+lA: 0.0015401504933834076
+uA: 1.3615177869796753
+grad_scaleA: 0.0
+output_scale: 0.17650993168354034
+
+
+lW: -0.31082892417907715
+uW: 0.3111116886138916
+grad_scaleW: 0.0
+lA: 5.1154398533981293e-05
+uA: 1.5909236669540405
+grad_scaleA: 0.0
+output_scale: 0.17554326355457306
+
+
+lW: -0.34988704323768616
+uW: 0.3499334454536438
+grad_scaleW: 0.0
+lA: -0.00012280821101740003
+uA: 1.7345956563949585
+grad_scaleA: 0.0
+output_scale: 0.22494234144687653
+
+
+lW: -0.29968830943107605
+uW: 0.2989599108695984
+grad_scaleW: 0.0
+lA: 0.0008540764101780951
+uA: 1.5309957265853882
+grad_scaleA: 0.0
+output_scale: 0.18187148869037628
+
+
+lW: -0.2960059344768524
+uW: 0.2964017391204834
+grad_scaleW: 0.0
+lA: 0.0007782195461913943
+uA: 1.9466580152511597
+grad_scaleA: 0.0
+output_scale: 0.19623270630836487
+
+
+lW: -0.24345986545085907
+uW: 0.2432590126991272
+grad_scaleW: 0.0
+lA: 0.0008756559109315276
+uA: 1.054205298423767
+grad_scaleA: 0.0
+output_scale: 0.09676488488912582
+
+
+lW: -0.2637815773487091
+uW: 0.26276203989982605
+grad_scaleW: 0.0
+lA: 0.0012362712295725942
+uA: 1.9162652492523193
+grad_scaleA: 0.0
+output_scale: 0.17811548709869385
+
+
+lW: -0.23222172260284424
+uW: 0.23227253556251526
+grad_scaleW: 0.0
+lA: -0.00020503898849710822
+uA: 1.30227530002594
+grad_scaleA: 0.0
+output_scale: 0.10952261090278625
+
+
+lW: -0.22590011358261108
+uW: 0.22732748091220856
+grad_scaleW: 0.0
+lA: 0.00021665357053279877
+uA: 2.0119407176971436
+grad_scaleA: 0.0
+output_scale: 0.17307254672050476
+
+
+lW: -0.20334342122077942
+uW: 0.20304681360721588
+grad_scaleW: 0.0
+lA: -0.0004575476923491806
+uA: 0.9147915244102478
+grad_scaleA: 0.0
+output_scale: 0.06741344183683395
+
+
+lW: -0.23583698272705078
+uW: 0.2359224110841751
+grad_scaleW: 0.0
+lA: -7.038376497803256e-05
+uA: 1.9525392055511475
+grad_scaleA: 0.0
+output_scale: 0.15461182594299316
+
+
+lW: -0.2014782428741455
+uW: 0.20145492255687714
+grad_scaleW: 0.0
+lA: 0.0019954259041696787
+uA: 0.8568257093429565
+grad_scaleA: 0.0
+output_scale: 0.06568261981010437
+
+
+lW: -0.19972997903823853
+uW: 0.19962169229984283
+grad_scaleW: 0.0
+lA: 0.0011853777104988694
+uA: 1.9649972915649414
+grad_scaleA: 0.0
+output_scale: 0.1504812240600586
+
+
+lW: -0.19015979766845703
+uW: 0.19073572754859924
+grad_scaleW: 0.0
+lA: 0.0021858850959688425
+uA: 1.09591543674469
+grad_scaleA: 0.0
+output_scale: 0.07397927343845367
+
+
+lW: -0.18782702088356018
+uW: 0.18830056488513947
+grad_scaleW: 0.0
+lA: 0.00032924427068792284
+uA: 1.9847691059112549
+grad_scaleA: 0.0
+output_scale: 0.12972982227802277
+
+
+lW: -0.17831538617610931
+uW: 0.17831926047801971
+grad_scaleW: 0.0
+lA: 0.0007158089429140091
+uA: 0.7474451661109924
+grad_scaleA: 0.0
+output_scale: 0.0444425567984581
+
+
+lW: -0.1886056512594223
+uW: 0.18917395174503326
+grad_scaleW: 0.0
+lA: 0.00014354969607666135
+uA: 1.7856067419052124
+grad_scaleA: 0.0
+output_scale: 0.11163664609193802
+
+
+lW: -0.1366039365530014
+uW: 0.13201776146888733
+grad_scaleW: 0.0
+lA: 0.0007059838389977813
+uA: 0.6645407676696777
+grad_scaleA: 0.0
+output_scale: 0.03404465317726135
+
+
+Current epoch: 003	 Test accuracy: 74.88%
+lW: -0.3262401521205902
+uW: 0.3261464834213257
+grad_scaleW: 0.0
+lA: 0.0020232240203768015
+uA: 1.3616372346878052
+grad_scaleA: 0.0
+output_scale: 0.17635390162467957
+
+
+lW: -0.3104802668094635
+uW: 0.3108142912387848
+grad_scaleW: 0.0
+lA: -8.21856883703731e-05
+uA: 1.5906567573547363
+grad_scaleA: 0.0
+output_scale: 0.17556673288345337
+
+
+lW: -0.3491329550743103
+uW: 0.34964197874069214
+grad_scaleW: 0.0
+lA: -0.00010949454008368775
+uA: 1.7340949773788452
+grad_scaleA: 0.0
+output_scale: 0.22455960512161255
+
+
+lW: -0.2994685173034668
+uW: 0.2984358072280884
+grad_scaleW: 0.0
+lA: 0.0017450751038268209
+uA: 1.5316210985183716
+grad_scaleA: 0.0
+output_scale: 0.18163006007671356
+
+
+lW: -0.2955118715763092
+uW: 0.2958785593509674
+grad_scaleW: 0.0
+lA: 0.0010296888649463654
+uA: 1.9469739198684692
+grad_scaleA: 0.0
+output_scale: 0.1957528442144394
+
+
+lW: -0.24293197691440582
+uW: 0.24327366054058075
+grad_scaleW: 0.0
+lA: 0.001090948237106204
+uA: 1.054776906967163
+grad_scaleA: 0.0
+output_scale: 0.09658055752515793
+
+
+lW: -0.26334989070892334
+uW: 0.2621845006942749
+grad_scaleW: 0.0
+lA: 0.0014690770767629147
+uA: 1.9167081117630005
+grad_scaleA: 0.0
+output_scale: 0.17807123064994812
+
+
+lW: -0.23167254030704498
+uW: 0.23165558278560638
+grad_scaleW: 0.0
+lA: -0.00021849776385352015
+uA: 1.3029232025146484
+grad_scaleA: 0.0
+output_scale: 0.10961581766605377
+
+
+lW: -0.22507205605506897
+uW: 0.22725273668766022
+grad_scaleW: 0.0
+lA: 1.0708904341072412e-07
+uA: 2.0126538276672363
+grad_scaleA: 0.0
+output_scale: 0.17225348949432373
+
+
+lW: -0.20301637053489685
+uW: 0.20269082486629486
+grad_scaleW: 0.0
+lA: -0.0006499181035906076
+uA: 0.9164444804191589
+grad_scaleA: 0.0
+output_scale: 0.06671794503927231
+
+
+lW: -0.23535317182540894
+uW: 0.23548763990402222
+grad_scaleW: 0.0
+lA: 0.0004890710697509348
+uA: 1.954155683517456
+grad_scaleA: 0.0
+output_scale: 0.1535344421863556
+
+
+lW: -0.20136713981628418
+uW: 0.20091283321380615
+grad_scaleW: 0.0
+lA: 0.0026660365983843803
+uA: 0.8585370182991028
+grad_scaleA: 0.0
+output_scale: 0.06544551998376846
+
+
+lW: -0.19914738833904266
+uW: 0.1990184485912323
+grad_scaleW: 0.0
+lA: 0.001181198051199317
+uA: 1.9665874242782593
+grad_scaleA: 0.0
+output_scale: 0.14966776967048645
+
+
+lW: -0.18968765437602997
+uW: 0.19034719467163086
+grad_scaleW: 0.0
+lA: 0.0026880030054599047
+uA: 1.0983911752700806
+grad_scaleA: 0.0
+output_scale: 0.07370041310787201
+
+
+lW: -0.18768194317817688
+uW: 0.18794159591197968
+grad_scaleW: 0.0
+lA: 0.0009427497279830277
+uA: 1.9870649576187134
+grad_scaleA: 0.0
+output_scale: 0.12851904332637787
+
+
+lW: -0.17788240313529968
+uW: 0.17829422652721405
+grad_scaleW: 0.0
+lA: 0.0003751673211809248
+uA: 0.7501574158668518
+grad_scaleA: 0.0
+output_scale: 0.044013991951942444
+
+
+lW: -0.18835961818695068
+uW: 0.1889287382364273
+grad_scaleW: 0.0
+lA: 8.254326530732214e-05
+uA: 1.7878438234329224
+grad_scaleA: 0.0
+output_scale: 0.11088640987873077
+
+
+lW: -0.1366044133901596
+uW: 0.1318150758743286
+grad_scaleW: 0.0
+lA: 0.00014931135228835046
+uA: 0.6670839786529541
+grad_scaleA: 0.0
+output_scale: 0.03384813293814659
+
+
+Current epoch: 004	 Test accuracy: 74.00999999999999%
+lW: -0.32588592171669006
+uW: 0.32567110657691956
+grad_scaleW: 0.0
+lA: 0.002969177206978202
+uA: 1.361763834953308
+grad_scaleA: 0.0
+output_scale: 0.17643308639526367
+
+
+lW: -0.3102065920829773
+uW: 0.31045255064964294
+grad_scaleW: 0.0
+lA: -2.382624188612681e-05
+uA: 1.5901949405670166
+grad_scaleA: 0.0
+output_scale: 0.17539294064044952
+
+
+lW: -0.3485550582408905
+uW: 0.3490947186946869
+grad_scaleW: 0.0
+lA: 1.3021619452047162e-05
+uA: 1.7337993383407593
+grad_scaleA: 0.0
+output_scale: 0.22428879141807556
+
+
+lW: -0.29928699135780334
+uW: 0.2978568375110626
+grad_scaleW: 0.0
+lA: 0.0023327618837356567
+uA: 1.531725287437439
+grad_scaleA: 0.0
+output_scale: 0.1815003603696823
+
+
+lW: -0.2949520945549011
+uW: 0.29548197984695435
+grad_scaleW: 0.0
+lA: 0.001328581478446722
+uA: 1.9465279579162598
+grad_scaleA: 0.0
+output_scale: 0.19541937112808228
+
+
+lW: -0.24242821335792542
+uW: 0.24307282269001007
+grad_scaleW: 0.0
+lA: 0.0016724738525226712
+uA: 1.055315613746643
+grad_scaleA: 0.0
+output_scale: 0.09623407572507858
+
+
+lW: -0.2630603313446045
+uW: 0.2615075707435608
+grad_scaleW: 0.0
+lA: 0.002091866685077548
+uA: 1.916938304901123
+grad_scaleA: 0.0
+output_scale: 0.178120955824852
+
+
+lW: -0.23087893426418304
+uW: 0.23118939995765686
+grad_scaleW: 0.0
+lA: 7.519010978285223e-05
+uA: 1.3038617372512817
+grad_scaleA: 0.0
+output_scale: 0.10945674031972885
+
+
+lW: -0.22436541318893433
+uW: 0.22697502374649048
+grad_scaleW: 0.0
+lA: 0.000582289241719991
+uA: 2.0137619972229004
+grad_scaleA: 0.0
+output_scale: 0.172156423330307
+
+
+lW: -0.20237034559249878
+uW: 0.20250429213047028
+grad_scaleW: 0.0
+lA: -0.0014991930220276117
+uA: 0.9175912141799927
+grad_scaleA: 0.0
+output_scale: 0.066504567861557
+
+
+lW: -0.2344987988471985
+uW: 0.23539398610591888
+grad_scaleW: 0.0
+lA: 0.0008354868041351438
+uA: 1.9565829038619995
+grad_scaleA: 0.0
+output_scale: 0.15292277932167053
+
+
+lW: -0.2007744312286377
+uW: 0.20083002746105194
+grad_scaleW: 0.0
+lA: 0.0026839938946068287
+uA: 0.8601459264755249
+grad_scaleA: 0.0
+output_scale: 0.06501571834087372
+
+
+lW: -0.19832108914852142
+uW: 0.1985945850610733
+grad_scaleW: 0.0
+lA: 0.0014973675133660436
+uA: 1.9678503274917603
+grad_scaleA: 0.0
+output_scale: 0.14961329102516174
+
+
+lW: -0.1889544129371643
+uW: 0.1900831013917923
+grad_scaleW: 0.0
+lA: 0.002259260741993785
+uA: 1.1004059314727783
+grad_scaleA: 0.0
+output_scale: 0.07324285805225372
+
+
+lW: -0.1876133531332016
+uW: 0.18738558888435364
+grad_scaleW: 0.0
+lA: 0.0015118829905986786
+uA: 1.9894356727600098
+grad_scaleA: 0.0
+output_scale: 0.12754181027412415
+
+
+lW: -0.17723825573921204
+uW: 0.17838026583194733
+grad_scaleW: 0.0
+lA: 0.00029324350180104375
+uA: 0.7522433400154114
+grad_scaleA: 0.0
+output_scale: 0.043226372450590134
+
+
+lW: -0.18811862170696259
+uW: 0.18861337006092072
+grad_scaleW: 0.0
+lA: 0.00020042830146849155
+uA: 1.7900526523590088
+grad_scaleA: 0.0
+output_scale: 0.11029404401779175
+
+
+lW: -0.13655595481395721
+uW: 0.1316981017589569
+grad_scaleW: 0.0
+lA: -0.0002963083970826119
+uA: 0.6692503690719604
+grad_scaleA: 0.0
+output_scale: 0.03354858234524727
+
+
+Current epoch: 005	 Test accuracy: 63.39%
+lW: -0.3256411552429199
+uW: 0.3251190781593323
+grad_scaleW: 0.0
+lA: 0.0034225136041641235
+uA: 1.3621013164520264
+grad_scaleA: 0.0
+output_scale: 0.176983043551445
+
+
+lW: -0.30980515480041504
+uW: 0.31008413434028625
+grad_scaleW: 0.0
+lA: -1.1740372428903356e-05
+uA: 1.5888458490371704
+grad_scaleA: 0.0
+output_scale: 0.1754436045885086
+
+
+lW: -0.3478248417377472
+uW: 0.34860658645629883
+grad_scaleW: 0.0
+lA: -2.333382326469291e-05
+uA: 1.7338528633117676
+grad_scaleA: 0.0
+output_scale: 0.2241971790790558
+
+
+lW: -0.29904356598854065
+uW: 0.29754915833473206
+grad_scaleW: 0.0
+lA: 0.003058064030483365
+uA: 1.5316013097763062
+grad_scaleA: 0.0
+output_scale: 0.18160611391067505
+
+
+lW: -0.29409390687942505
+uW: 0.295372873544693
+grad_scaleW: 0.0
+lA: 0.001683196285739541
+uA: 1.946770191192627
+grad_scaleA: 0.0
+output_scale: 0.19538246095180511
+
+
+lW: -0.24195973575115204
+uW: 0.24295370280742645
+grad_scaleW: 0.0
+lA: 0.0013213417259976268
+uA: 1.055660605430603
+grad_scaleA: 0.0
+output_scale: 0.0961546003818512
+
+
+lW: -0.2622416615486145
+uW: 0.26124754548072815
+grad_scaleW: 0.0
+lA: 0.002406622050330043
+uA: 1.9165745973587036
+grad_scaleA: 0.0
+output_scale: 0.17826904356479645
+
+
+lW: -0.2299991399049759
+uW: 0.2307441234588623
+grad_scaleW: 0.0
+lA: 0.00012169448018539697
+uA: 1.303963303565979
+grad_scaleA: 0.0
+output_scale: 0.10953289270401001
+
+
+lW: -0.22357644140720367
+uW: 0.22671450674533844
+grad_scaleW: 0.0
+lA: 0.0008891980978660285
+uA: 2.014395236968994
+grad_scaleA: 0.0
+output_scale: 0.17123381793498993
+
+
+lW: -0.20185887813568115
+uW: 0.20220516622066498
+grad_scaleW: 0.0
+lA: -0.0015728968428447843
+uA: 0.9191386699676514
+grad_scaleA: 0.0
+output_scale: 0.06618742644786835
+
+
+lW: -0.233712300658226
+uW: 0.235332190990448
+grad_scaleW: 0.0
+lA: 0.0007951051811687648
+uA: 1.9575566053390503
+grad_scaleA: 0.0
+output_scale: 0.15194441378116608
+
+
+lW: -0.20054347813129425
+uW: 0.20033694803714752
+grad_scaleW: 0.0
+lA: 0.0033990242518484592
+uA: 0.8616510033607483
+grad_scaleA: 0.0
+output_scale: 0.06472847610712051
+
+
+lW: -0.19797340035438538
+uW: 0.19779078662395477
+grad_scaleW: 0.0
+lA: 0.0015883790329098701
+uA: 1.9686874151229858
+grad_scaleA: 0.0
+output_scale: 0.1490253359079361
+
+
+lW: -0.1883045732975006
+uW: 0.18983213603496552
+grad_scaleW: 0.0
+lA: 0.0025310281198471785
+uA: 1.1028794050216675
+grad_scaleA: 0.0
+output_scale: 0.07286298274993896
+
+
+lW: -0.18712206184864044
+uW: 0.18722178041934967
+grad_scaleW: 0.0
+lA: 0.002176244044676423
+uA: 1.9919780492782593
+grad_scaleA: 0.0
+output_scale: 0.12653182446956635
+
+
+lW: -0.17671185731887817
+uW: 0.1782972365617752
+grad_scaleW: 0.0
+lA: 0.0002556915278546512
+uA: 0.7545405626296997
+grad_scaleA: 0.0
+output_scale: 0.04250693321228027
+
+
+lW: -0.1875799298286438
+uW: 0.188513845205307
+grad_scaleW: 0.0
+lA: 0.00037844982580281794
+uA: 1.7926148176193237
+grad_scaleA: 0.0
+output_scale: 0.10941845178604126
+
+
+lW: -0.13636502623558044
+uW: 0.13172481954097748
+grad_scaleW: 0.0
+lA: -5.9560701629379764e-05
+uA: 0.6712424755096436
+grad_scaleA: 0.0
+output_scale: 0.033179715275764465
+
+
+configs
+dataset: cifar10	arch: resnet20_quant	num_workers: 4	seed: None	batch_size: 256	epochs: 400	optimizer_m: Adam	optimizer_q: Adam	lr_m: 0.004	lr_q: 4e-05	lr_m_end: 0.0	lr_q_end: 0.0	decay_schedule_m: 150-300	decay_schedule_q: 150-300	momentum: 0.9	weight_decay: 0.0001	lr_scheduler_m: cosine	lr_scheduler_q: cosine	gamma: 0.1	QWeightFlag: True	QActFlag: True	weight_levels: 2	act_levels: 256	baseline: False	bkwd_scaling_factorW: 0.0	bkwd_scaling_factorA: 0.0	use_hessian: True	update_every: 10	gpu_id: 0	log_dir: layer_test/	load_pretrain: True	pretrain_path: ../results/ResNet20_CIFAR10/fp/checkpoint/best_checkpoint.pth	btq: False	training_flag: False	eval: False	weighted: False	bits: 5	cv_block_size: 6	pw_fc_block_size: 4	sensitivity: False	per_layer: False	
+
+The number of parameters : 269940
+
+Following modules are initialized from pretrained model
+conv1.weight	bn1.weight	bn1.bias	bn1.running_mean	bn1.running_var	bn1.num_batches_tracked	layer1.0.conv1.weight	layer1.0.bn1.weight	layer1.0.bn1.bias	layer1.0.bn1.running_mean	layer1.0.bn1.running_var	layer1.0.bn1.num_batches_tracked	layer1.0.conv2.weight	layer1.0.bn2.weight	layer1.0.bn2.bias	layer1.0.bn2.running_mean	layer1.0.bn2.running_var	layer1.0.bn2.num_batches_tracked	layer1.1.conv1.weight	layer1.1.bn1.weight	layer1.1.bn1.bias	layer1.1.bn1.running_mean	layer1.1.bn1.running_var	layer1.1.bn1.num_batches_tracked	layer1.1.conv2.weight	layer1.1.bn2.weight	layer1.1.bn2.bias	layer1.1.bn2.running_mean	layer1.1.bn2.running_var	layer1.1.bn2.num_batches_tracked	layer1.2.conv1.weight	layer1.2.bn1.weight	layer1.2.bn1.bias	layer1.2.bn1.running_mean	layer1.2.bn1.running_var	layer1.2.bn1.num_batches_tracked	layer1.2.conv2.weight	layer1.2.bn2.weight	layer1.2.bn2.bias	layer1.2.bn2.running_mean	layer1.2.bn2.running_var	layer1.2.bn2.num_batches_tracked	layer2.0.conv1.weight	layer2.0.bn1.weight	layer2.0.bn1.bias	layer2.0.bn1.running_mean	layer2.0.bn1.running_var	layer2.0.bn1.num_batches_tracked	layer2.0.conv2.weight	layer2.0.bn2.weight	layer2.0.bn2.bias	layer2.0.bn2.running_mean	layer2.0.bn2.running_var	layer2.0.bn2.num_batches_tracked	layer2.1.conv1.weight	layer2.1.bn1.weight	layer2.1.bn1.bias	layer2.1.bn1.running_mean	layer2.1.bn1.running_var	layer2.1.bn1.num_batches_tracked	layer2.1.conv2.weight	layer2.1.bn2.weight	layer2.1.bn2.bias	layer2.1.bn2.running_mean	layer2.1.bn2.running_var	layer2.1.bn2.num_batches_tracked	layer2.2.conv1.weight	layer2.2.bn1.weight	layer2.2.bn1.bias	layer2.2.bn1.running_mean	layer2.2.bn1.running_var	layer2.2.bn1.num_batches_tracked	layer2.2.conv2.weight	layer2.2.bn2.weight	layer2.2.bn2.bias	layer2.2.bn2.running_mean	layer2.2.bn2.running_var	layer2.2.bn2.num_batches_tracked	layer3.0.conv1.weight	layer3.0.bn1.weight	layer3.0.bn1.bias	layer3.0.bn1.running_mean	layer3.0.bn1.running_var	layer3.0.bn1.num_batches_tracked	layer3.0.conv2.weight	layer3.0.bn2.weight	layer3.0.bn2.bias	layer3.0.bn2.running_mean	layer3.0.bn2.running_var	layer3.0.bn2.num_batches_tracked	layer3.1.conv1.weight	layer3.1.bn1.weight	layer3.1.bn1.bias	layer3.1.bn1.running_mean	layer3.1.bn1.running_var	layer3.1.bn1.num_batches_tracked	layer3.1.conv2.weight	layer3.1.bn2.weight	layer3.1.bn2.bias	layer3.1.bn2.running_mean	layer3.1.bn2.running_var	layer3.1.bn2.num_batches_tracked	layer3.2.conv1.weight	layer3.2.bn1.weight	layer3.2.bn1.bias	layer3.2.bn1.running_mean	layer3.2.bn1.running_var	layer3.2.bn1.num_batches_tracked	layer3.2.conv2.weight	layer3.2.bn2.weight	layer3.2.bn2.bias	layer3.2.bn2.running_mean	layer3.2.bn2.running_var	layer3.2.bn2.num_batches_tracked	bn2.weight	bn2.bias	bn2.running_mean	bn2.running_var	bn2.num_batches_tracked	linear.weight	linear.bias	
+

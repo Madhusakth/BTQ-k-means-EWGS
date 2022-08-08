@@ -131,7 +131,8 @@ def sens_k_means_pq(weight, grad,name=None):
         mean = False
         weighted = args.weighted #False
         #print("weighted k-means:", args.weighted)
-        if weight.numel() < 1000:
+        skip_weight_limit = 1000
+        if weight.numel() < skip_weight_limit:
             skip = True
         else:
             skip = False
@@ -143,7 +144,8 @@ def sens_k_means_pq(weight, grad,name=None):
 
         bit = args.bits
         bins = 2**bit
-        if skip and weight.numel() < 1000:
+        print("number of params", name, weight.numel())
+        if skip and weight.numel() < skip_weight_limit:
             #TODO: Sensitvity split k-means for skipped weights
             print("Skipping weights:", name)
             bit = 8
@@ -167,7 +169,7 @@ def sens_k_means_pq(weight, grad,name=None):
         if conv:
             if d3 == 3 and d4 == 3:
                 #if name in pq_layers:
-                if "weight" in name and weight.numel()>=1000:  #############skip override
+                if "weight" in name and weight.numel()>=skip_weight_limit:  #############skip override
                     block_size=args.cv_block_size
                     print("product quantization with block_size: ",block_size, name)
                     pq = True
@@ -200,7 +202,8 @@ def sens_k_means_pq(weight, grad,name=None):
         weight = reshape_weights(weight)
         weight = unroll_weights(weight, n_blocks)
 
-        if skip:
+        #if skip and weight.numel() < skip_weight_limit*10:
+        if weight.numel() < skip_weight_limit*10:
             print("k-means on skipped weights", weight_np.shape)
             grad_np = np.mean(abs(grad_np), axis=0)  #mean of gradients across block
             grad_np = grad_np.reshape(-1)/np.linalg.norm(grad_np) #norm_grad_np
@@ -213,9 +216,10 @@ def sens_k_means_pq(weight, grad,name=None):
             layer_bits = 0
             
             #partition_bits = [4,6]
-            partition_bits = [5,5,5,5]
+            partition_bits = [2,2,8,8]
             number_of_part = weight_np.shape[1]//len(partition_bits)
-
+            
+            '''
             #accumulate grad for partitions
             total_grad = []
             for p in range(len(partition_bits)):
@@ -225,6 +229,15 @@ def sens_k_means_pq(weight, grad,name=None):
 
             grad_np = np.mean(abs(grad_np), axis=0)  #mean of gradients across block
             grad_np = grad_np.reshape(-1)/np.linalg.norm(grad_np) #norm_grad_np
+            '''
+            grad_np = np.mean(abs(grad_np), axis=0)  #mean of gradients across block
+            grad_np = grad_np.reshape(-1)/np.linalg.norm(grad_np) #norm_grad_np
+            #accumulate grad for partitions
+            total_grad = []
+            for p in range(len(partition_bits)):
+                total_grad.append((abs(grad_np[p*number_of_part: (p+1)*number_of_part]).sum()))
+            grad_idxs = np.argsort(total_grad)
+            weight_np = weight_np.T
 
             for p in range(len(partition_bits)):
                 curr_bin = partition_bits[int(np.where(grad_idxs==p)[0])]

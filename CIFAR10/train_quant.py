@@ -600,7 +600,7 @@ for ep in range(args.epochs):
         total_comp_bits = 0
         for name, param in model.named_parameters():
             #if ('layer' in name and 'conv' in name and 'weight' in name and 'bn' not in name) or name=='model_fp32.fc.weight':
-            if ('layer' in name or 'weight' in name) and len(param.shape) >=2:
+            if ('layer' in name or 'weight' in name) and len(param.shape) >2:   #>=2
                 print(name, param.shape)
                 if debug:
                     if param.shape[0] == 32 and param.shape[1]==16:

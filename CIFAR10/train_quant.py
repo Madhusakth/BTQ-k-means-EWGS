@@ -87,7 +87,8 @@ parser.add_argument('--bits', type=int, default=5, help='bits/weight')
 parser.add_argument('--cv_block_size', type=int, default=6, help='3x3 kernel block size')
 parser.add_argument('--pw_fc_block_size', type=int, default=4, help='1x1 fc kernel block size')
 
-parser.add_argument('--sensitivity', type=str2bool, default=False, help='sensitivity')
+parser.add_argument('--sensitivity', type=str2bool, default=False, help='sensitivity') 
+parser.add_argument('--per_iter_btq', type=str2bool, default=False, help='per iteration btq')
 
 args = parser.parse_args()
 arg_dict = vars(args)
@@ -234,10 +235,10 @@ def sens_k_means_pq(weight, grad,name=None):
 
 def k_means_pq(weight, grad,name=None):
     with torch.no_grad():
-        print("Quantizing weight:", name, weight.shape)
+        #print("Quantizing weight:", name, weight.shape)
         mean = False
         weighted = args.weighted #False
-        print("weighted k-means:", args.weighted)
+        #print("weighted k-means:", args.weighted)
         if weight.numel() < 1000:
             skip = True
         else:
@@ -247,7 +248,7 @@ def k_means_pq(weight, grad,name=None):
         bit = args.bits
         bins = 2**bit
         if skip:
-            print("Skipping weights:", name)
+            #print("Skipping weights:", name)
             bit = 8
             bins = 2**bit
 
@@ -273,7 +274,7 @@ def k_means_pq(weight, grad,name=None):
                 #if name in pq_layers:
                 if "weight" in name and skip==False:
                     block_size=args.cv_block_size
-                    print("product quantization with block_size: ",block_size, name)
+                    #print("product quantization with block_size: ",block_size, name)
                     pq = True
                 else:
                     block_size = 1 #####
@@ -282,7 +283,7 @@ def k_means_pq(weight, grad,name=None):
                 #if name in pq_layers_depth:
                 if "weight" in name and skip==False:
                     block_size=args.pw_fc_block_size  #4
-                    print("product quantization with block_size: ",block_size, name)
+                    #print("product quantization with block_size: ",block_size, name)
                     pq = True
                 else:
                     block_size = 1
@@ -292,6 +293,7 @@ def k_means_pq(weight, grad,name=None):
             n_blocks = d2 // block_size
             d3=1
 
+        
         layer_bits = weight.numel()*bit/block_size
         #if skip:
         #return weight, layer_bits
@@ -315,7 +317,7 @@ def k_means_pq(weight, grad,name=None):
             print("sum of grad_np", grad_np.sum(), grad_np.shape)
         else:
             grad_np = grad_np.reshape(-1)/np.linalg.norm(grad_np) #norm_grad_np
-            grad_np = grad_np*100000  #multiply by a constant
+            #grad_np = grad_np*100000  #multiply by a constant
 
         weight = reshape_weights(weight)
         weight = unroll_weights(weight, n_blocks)
@@ -341,15 +343,15 @@ def k_means_pq(weight, grad,name=None):
         else:
             weight = torch.from_numpy(weight_np.T).float().to(cuda_device)
 
-        if pq:
-            print(weight.shape, weight_np.shape, len(np.unique(weight_np)))
+        #if pq:
+        #    print(weight.shape, weight_np.shape, len(np.unique(weight_np)))
 
         #del grad_np, weight_np, grad, v2
         #print("before roll weights", weight.shape)
         weight = roll_weights(weight, n_blocks)
         #print("before reshape", weight.shape)
         weight = reshape_back_weights(weight, d3, conv)
-        print("final weight shape:", weight.shape)
+        #print("final weight shape:", weight.shape)
         return weight, layer_bits
 
 
@@ -587,6 +589,26 @@ for ep in range(args.epochs):
         
         optimizer_m.step()
         optimizer_q.step()
+
+        if args.per_iter_btq and i%10 == 0:
+            state_dict = model.state_dict()
+            total_bits = 0
+            total_comp_bits = 0
+
+            for name, param in model.named_parameters():
+                if ('layer' in name or 'weight' in name) and len(param.shape) >2:
+                    state_dict[name], layer_bits = k_means_pq(state_dict[name],param.grad,name)
+                    total_bits += state_dict[name].numel()#*5
+                    total_comp_bits += layer_bits
+                elif 'bias' in name:
+                    total_bits += state_dict[name].numel()
+                    total_comp_bits += state_dict[name].numel()*8 ######32
+                else:
+                    total_bits += state_dict[name].numel()
+                    total_comp_bits += state_dict[name].numel()*8
+            model.load_state_dict(state_dict)
+            print("Bit ratio for compressed layers:", total_comp_bits/total_bits) #total_bits/total_comp_bits)
+
         writer.add_scalar('train/loss', loss.item(), total_iter)
         total_iter += 1
         if debug:

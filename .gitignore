@@ -4,3 +4,4 @@ ResNet20_CIFAR10_BQ/*
 CIFAR10/test*
 CIFAR10/layer_test/*
 CIFAR10/orig_W1A8/*
+ImageNet/mobilenet_v2.log 

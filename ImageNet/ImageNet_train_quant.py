@@ -128,10 +128,10 @@ parser.add_argument('--QActFlag', type=str2bool, default=True, help='do activati
 parser.add_argument('--weight_levels', type=int, default=2, help='number of weight quantization levels')
 parser.add_argument('--act_levels', type=int, default=2, help='number of activation quantization levels')
 parser.add_argument('--baseline', type=str2bool, default=False, help='training with STE')
-parser.add_argument('--bkwd_scaling_factorW', type=float, default=0.0, help='scaling factor for weights')
-parser.add_argument('--bkwd_scaling_factorA', type=float, default=0.0, help='scaling factor for activations')
+parser.add_argument('--bkwd_scaling_factorW', type=float, default=0.01, help='scaling factor for weights')
+parser.add_argument('--bkwd_scaling_factorA', type=float, default=0.01, help='scaling factor for activations')
 parser.add_argument('--use_hessian', type=str2bool, default=True, help='update scsaling factor using Hessian trace')
-parser.add_argument('--update_scales_every', type=int, default=1, help='update interval in terms of epochs')
+parser.add_argument('--update_scales_every', type=int, default=10, help='update interval in terms of epochs')
 parser.add_argument('--visible_gpus', default=None, type=str, help='total GPUs to use')
 
 parser.add_argument('--btq', default=False, type=str2bool, help='BTQ setting')
@@ -452,7 +452,7 @@ def k_means_pq(weight, grad,name=None):
     with torch.no_grad():
         print("Quantizing weight:", name, weight.shape)
         mean = False
-        weighted = False
+        weighted = True
         if weight.numel() < 10000:
             skip = True
         else:
@@ -486,7 +486,7 @@ def k_means_pq(weight, grad,name=None):
             if d3 == 3 and d4 == 3:
                 #if name in pq_layers:
                 if "module" in name and skip==False:
-                    block_size= 4 #6
+                    block_size= 1
                     print("product quantization with block_size: ",block_size, name)
                     pq = True
                 else:
@@ -495,7 +495,7 @@ def k_means_pq(weight, grad,name=None):
             else:
                 #if name in pq_layers_depth:
                 if "module" in name and skip==False:
-                    block_size = 4
+                    block_size = 2
                     print("product quantization with block_size: ",block_size, name)
                     pq = True
                 else:
@@ -627,8 +627,8 @@ def train(train_loader, model, criterion, optimizer_m, optimizer_q, scheduler_m,
                         num_modules += 1
 
             progress.display(i)
-        if i >=1000:
-            break
+        #if i >=1000:
+        #    break
     #''' 
     if args.btq and epoch >= 0:
         state_dict = model.state_dict()

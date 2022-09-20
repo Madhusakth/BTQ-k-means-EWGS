@@ -90,6 +90,7 @@ parser.add_argument('--pw_fc_block_size', type=int, default=4, help='1x1 fc kern
 parser.add_argument('--sensitivity', type=str2bool, default=False, help='sensitivity') 
 parser.add_argument('--per_iter_btq', type=str2bool, default=False, help='per iteration btq')
 
+parser.add_argument('--debug', type=str2bool, default=False, help='debug')
 args = parser.parse_args()
 arg_dict = vars(args)
 
@@ -178,8 +179,7 @@ def sens_k_means_pq(weight, grad,name=None):
 
         layer_bits = weight.numel()*bit/block_size
         
-        debug = False
-        if debug:
+        if args.debug:
             if skip:
                 return weight, layer_bits
         #print("before reshape", weight_np.shape)
@@ -231,6 +231,8 @@ def sens_k_means_pq(weight, grad,name=None):
         weight = reshape_back_weights(weight, d3, conv)
         print("final weight shape:", weight.shape)
         return weight, layer_bits
+
+
 
 
 def k_means_pq(weight, grad,name=None):
@@ -289,14 +291,14 @@ def k_means_pq(weight, grad,name=None):
                     block_size = 1
                 n_blocks = d2 // block_size
         else:
-            block_size = 4
+            block_size = 4 #args.pw_fc_block_size
             n_blocks = d2 // block_size
             d3=1
 
         
         layer_bits = weight.numel()*bit/block_size
-        #if skip:
-        #return weight, layer_bits
+        if args.debug:
+            return weight, layer_bits
 
 
         #print("before reshape", weight_np.shape)
@@ -316,7 +318,7 @@ def k_means_pq(weight, grad,name=None):
             grad_np = softmax(grad_np)
             print("sum of grad_np", grad_np.sum(), grad_np.shape)
         else:
-            grad_np = grad_np.reshape(-1)/np.linalg.norm(grad_np) #norm_grad_np
+            grad_np = grad_np.reshape(-1)/(np.linalg.norm(grad_np))#+0.01) #norm_grad_np
             #grad_np = grad_np*100000  #multiply by a constant
 
         weight = reshape_weights(weight)
@@ -335,6 +337,7 @@ def k_means_pq(weight, grad,name=None):
             else:
                 kmeans = KMeans(n_clusters=bins).fit(weight_np.T) #   ####random_state=0
 
+
         weight_np = kmeans.cluster_centers_[ kmeans.labels_]
         if mean:
             weight_np = weight_np.reshape(-1)  ##
@@ -352,6 +355,9 @@ def k_means_pq(weight, grad,name=None):
         #print("before reshape", weight.shape)
         weight = reshape_back_weights(weight, d3, conv)
         #print("final weight shape:", weight.shape)
+
+        
+        #layer_bits += kmeans.cluster_centers_.shape[0]*kmeans.cluster_centers_.shape[1]*8
         return weight, layer_bits
 
 
@@ -558,7 +564,6 @@ writer = SummaryWriter(args.log_dir)
 
 print(model)
 
-debug = False
 
 ### train
 #'''
@@ -590,7 +595,7 @@ for ep in range(args.epochs):
         optimizer_m.step()
         optimizer_q.step()
 
-        if args.per_iter_btq and i%10 == 0:
+        if args.per_iter_btq and i%100 == 0:
             state_dict = model.state_dict()
             total_bits = 0
             total_comp_bits = 0
@@ -611,7 +616,7 @@ for ep in range(args.epochs):
 
         writer.add_scalar('train/loss', loss.item(), total_iter)
         total_iter += 1
-        if debug:
+        if args.debug:
             if total_iter >=1: ########################
                 break
             print("******************** done training ******************")
@@ -624,7 +629,7 @@ for ep in range(args.epochs):
             #if ('layer' in name and 'conv' in name and 'weight' in name and 'bn' not in name) or name=='model_fp32.fc.weight':
             if ('layer' in name or 'weight' in name) and len(param.shape) >2:   #>=2
                 print(name, param.shape)
-                if debug:
+                if args.debug:
                     if param.shape[0] == 32 and param.shape[1]==16:
                         weight = torch.cat(param.view(32, 16 * 3 * 3).t().chunk(16*3*3//12, dim=0), dim=1)
                         print("*********:",np.unique(weight.cpu().detach().numpy(),axis=1).shape, param.shape)

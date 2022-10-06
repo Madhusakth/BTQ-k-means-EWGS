@@ -135,6 +135,11 @@ parser.add_argument('--update_scales_every', type=int, default=10, help='update 
 parser.add_argument('--visible_gpus', default=None, type=str, help='total GPUs to use')
 
 parser.add_argument('--btq', default=False, type=str2bool, help='BTQ setting')
+parser.add_argument('--cv_block_size', type=int, default=3, help='cv size')
+parser.add_argument('--pw_block_size', type=int, default=2, help='pw size')
+parser.add_argument('--fc_block_size', type=int, default=2, help='fc size')
+parser.add_argument('--bits', type=int, default=5, help='bits')
+parser.add_argument('--debug', default=False, type=str2bool, help='Debug')
 
 # logging
 parser.add_argument('--log_dir', type=str, default='../results/ResNet18/ours(hess)/W1A1/')
@@ -448,18 +453,18 @@ def main_worker(gpu, ngpus_per_node, args):
             }, is_best, path=args.log_dir)
 
 
-def k_means_pq(weight, grad,name=None):
+def k_means_pq(weight, grad,name=None,args=None):
     with torch.no_grad():
         print("Quantizing weight:", name, weight.shape)
         mean = False
         weighted = True
-        if weight.numel() < 1000:
+        if weight.numel() < 10000:
             skip = True
         else:
             skip = False
 
 
-        bit = 5
+        bit = args.bits #8 #5
         bins = 2**bit
         if skip:
             bit = 8
@@ -478,15 +483,13 @@ def k_means_pq(weight, grad,name=None):
         else:
             d1, d2 = weight_np.shape[0], weight_np.shape[1]
 
-        pq_layers = ["model_fp32.layer4.2.conv2.weight", "model_fp32.layer4.1.conv2.weight", "model_fp32.layer4.0.conv2.weight"]
-        pq_layers_depth = ["model_fp32.layer4.2.conv3.weight", "model_fp32.layer4.2.conv1.weight","model_fp32.layer4.1.conv3.weight"]
         pq = False
 
         if conv:
             if d3 == 3 and d4 == 3:
                 #if name in pq_layers:
                 if "module" in name and skip==False:
-                    block_size= 4 #6
+                    block_size= args.cv_block_size #1
                     print("product quantization with block_size: ",block_size, name)
                     pq = True
                 else:
@@ -495,20 +498,20 @@ def k_means_pq(weight, grad,name=None):
             else:
                 #if name in pq_layers_depth:
                 if "module" in name and skip==False:
-                    block_size = 4
+                    block_size = args.pw_block_size #2
                     print("product quantization with block_size: ",block_size, name)
                     pq = True
                 else:
                     block_size = 1
                 n_blocks = d2 // block_size
         else:
-            block_size = 4
+            block_size = args.fc_block_size #4
             n_blocks = d2 // block_size
             d3=1
 
         layer_bits = weight.numel()*bit/block_size
 
-        if skip:
+        if skip or args.debug:
             return weight, layer_bits
 
 
@@ -627,8 +630,10 @@ def train(train_loader, model, criterion, optimizer_m, optimizer_q, scheduler_m,
                         num_modules += 1
 
             progress.display(i)
-        if i >=1000:
-            break
+        if args.debug and i>=10:
+           break
+        #if i >=100:
+        #    break
     #''' 
     if args.btq and epoch >= 0:
         state_dict = model.state_dict()
@@ -639,7 +644,7 @@ def train(train_loader, model, criterion, optimizer_m, optimizer_q, scheduler_m,
             #if (('layer' in name and 'weight' in name and 'bn' not in name) or name=='model_fp32.fc.weight') and len(param.shape) >=2:
             if 'weight' in name and len(param.shape) >=2:
                 print(name, param.shape)
-                state_dict[name], layer_bits = k_means_pq(state_dict[name],param.grad,name)
+                state_dict[name], layer_bits = k_means_pq(state_dict[name],param.grad,name,args)
                 total_bits += state_dict[name].numel()#*5
                 total_comp_bits += layer_bits
             elif 'bias' in name:

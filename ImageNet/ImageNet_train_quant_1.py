@@ -502,7 +502,7 @@ def k_means_pq(weight, grad,name=None):
                     block_size = 1
                 n_blocks = d2 // block_size
         else:
-            block_size = 4
+            block_size = 2
             n_blocks = d2 // block_size
             d3=1
 

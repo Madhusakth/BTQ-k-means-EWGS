@@ -5,3 +5,6 @@ CIFAR10/test*
 CIFAR10/layer_test/*
 CIFAR10/orig_W1A8/*
 ImageNet/mobilenet_v2.log 
+ImageNet/mobilenet_v2*
+ImageNet/resnet50-0676ba61.pth
+ImageNet/venv-pytorch* 
